@@ -126,9 +126,9 @@ export class AccountRepository extends Repository {
     return body;
   }
   async send_two_factor_login_sms(options) {
-    options = (0, lodash_1.defaultsDeep)(options, {
-        trustThisDevice: '1',
-        verificationMethod: '1',
+    options = defaultsDeep(options, {
+      trustThisDevice: '1',
+      verificationMethod: '1',
     });
     const { body } = await this.client.request.send({
         url: '/api/v1/accounts/send_two_factor_login_sms/',
