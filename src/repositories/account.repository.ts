@@ -125,7 +125,27 @@ export class AccountRepository extends Repository {
     });
     return body;
   }
-
+  async send_two_factor_login_sms(options) {
+    options = (0, lodash_1.defaultsDeep)(options, {
+        trustThisDevice: '1',
+        verificationMethod: '1',
+    });
+    const { body } = await this.client.request.send({
+        url: '/api/v1/accounts/send_two_factor_login_sms/',
+        method: 'POST',
+        form: this.client.request.sign({
+            verification_code: options.verificationCode,
+            _csrftoken: this.client.state.cookieCsrfToken,
+            two_factor_identifier: options.twoFactorIdentifier,
+            username: options.username,
+            trust_this_device: options.trustThisDevice,
+            guid: this.client.state.uuid,
+            device_id: this.client.state.deviceId,
+            verification_method: options.verificationMethod,
+        }),
+    });
+    return body;
+}
   public async logout() {
     const { body } = await this.client.request.send<StatusResponse>({
       method: 'POST',
