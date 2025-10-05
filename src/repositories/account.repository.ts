@@ -125,6 +125,17 @@ export class AccountRepository extends Repository {
     });
     return body;
   }
+  async twoFactorNavigate(options) {
+    options = defaultsDeep(options, {
+      action: 'navigate',
+    });
+    const { body } = await this.client.request.send({
+        url: '/accounts/login/two_factor?next=%2F',
+        method: 'GET',
+        form: this.client.request.sign(options),
+    });
+    return body;
+}
   async send_two_factor_login_sms(options) {
     options = defaultsDeep(options, {
       trustThisDevice: '1',
